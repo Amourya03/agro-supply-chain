@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plant Disease Classifier</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="video-container">
+        <h1>Plant Disease Classifier</h1>
+        <video id="videoElement" autoplay></video>
+        <button id="captureButton" onclick="captureImage()">Capture</button>
+      </div>
+      <div class="prediction-container">
+        <h2>Prediction:</h2>
+        <div id="capturedImageContainer"></div>
+        <p id="predictionText"></p>
+      </div>
+    </div>
+    <script>
+      const videoElement = document.getElementById('videoElement');
+      const captureButton = document.getElementById('captureButton');
+      const capturedImageContainer = document.getElementById('capturedImageContainer');
+      const predictionText = document.getElementById('predictionText');
+      const constraints = { video: true };
+
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then(function (stream) {
+          videoElement.srcObject = stream;
+        })
+        .catch(function (error) {
+          console.log('Error accessing webcam:', error);
+        });
+
+      function captureImage() {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        const capturedImage = document.createElement('img');
+        capturedImage.src = canvas.toDataURL('image/png');
+        capturedImageContainer.innerHTML = '';
+        capturedImageContainer.appendChild(capturedImage);
+        capturedImageContainer.style.display = 'block';
+        predictionText.innerHTML = 'Prediction in progress...';
+
+        const stream = videoElement.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach(function (track) {
+          track.stop();
+        });
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/predict', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            predictionText.innerHTML = 'Prediction: ' + response.prediction;
+          }
+        };
+        xhr.send(JSON.stringify({ image_data: capturedImage.src }));
+      }
+    </script>
+  </body>
+</html>
