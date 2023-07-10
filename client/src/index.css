@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.footercolor, .navbarcolor{
+    background-image: linear-gradient(to right, #75d6f8, #67cbfb, #62bffd, #68b2fd, #75a4f9);;
+}
+
+.body{
+    width: 100%;
+}

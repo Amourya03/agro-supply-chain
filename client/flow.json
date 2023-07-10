@@ -1,0 +1,26 @@
+{
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"contracts": {
+		"RegisterdUsers": "./contracts/RegisterdUsers.cdc",
+		"Crops": "./contracts/Crops.cdc"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "1a34235cf3f1dcbc1e7055592f3657b9b6ba8fce634c46c022af26d952524066"
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": [
+				"RegisterdUsers",
+				"Crops"
+			]
+		}
+	}
+}

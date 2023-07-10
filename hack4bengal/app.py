@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
-model = tf.keras.models.load_model('E:\Assets of Youth\hack4bengal\EfficientNetB4-INSECTS-0.00.h5')
+model = tf.keras.models.load_model('C:\\Users\\SATYAJIT\\Desktop\\KAPS\\agro-supply-chain\\hack4bengal\\EfficientNetB4-INSECTS-0.00.h5')
 image_size = (200, 200)
 
 @app.route('/')
